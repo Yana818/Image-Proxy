@@ -13,7 +13,7 @@ const SettingSlider = (props) => {
   const { defaultIsMin, title, defaultValue, maxValue, value, setSlider } = props;
   useEffect(() => {
     setSlider(value);
-  }, [defaultValue]);
+  }, [defaultValue, setSlider, value]);
 
   return (
     <SliderWrapper>
