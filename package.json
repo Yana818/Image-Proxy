@@ -39,7 +39,9 @@
       "react-hooks"
     ],
     "rules": {
-      "react/prop-types": 0
+      "react/prop-types": 0,
+      "semi": ["error", "always"],
+      "quotes": ["error", "single"]
     }
   },
   "browserslist": {
