@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import Slider from "rc-slider";
-import styled from "styled-components";
-import "rc-slider/assets/index.css";
+import React, { useEffect } from 'react';
+import Slider from 'rc-slider';
+import styled from 'styled-components';
+import 'rc-slider/assets/index.css';
 
 const SliderWrapper = styled.div`
   width: 170px;

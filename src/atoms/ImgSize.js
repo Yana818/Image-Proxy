@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Resizable } from "re-resizable";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react';
+import { Resizable } from 're-resizable';
+import styled from 'styled-components';
 
 const ResizableWrapper = styled.div`
   position: relative;
@@ -17,11 +17,11 @@ const ResizableWrapper = styled.div`
 `;
 
 const style = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "solid 1px #ddd",
-  background: "#666",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: 'solid 1px #ddd',
+  background: '#666',
 };
 
 const ImgSize = (props) => {
@@ -33,7 +33,7 @@ const ImgSize = (props) => {
   useEffect(() => {
     setWidth(widthSize);
     setHeight(heightSize);
-   },[widthSize, heightSize])
+   },[widthSize, heightSize]);
   return (
     <ResizableWrapper>
       <Resizable

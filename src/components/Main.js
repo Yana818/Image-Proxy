@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useRef, useEffect } from 'react';
+import styled from 'styled-components';
 
-import SettingSlider from "../atoms/Slider";
-import ImgSize from "../atoms/ImgSize";
-import Selector from "../atoms/Selector";
+import SettingSlider from '../atoms/Slider';
+import ImgSize from '../atoms/ImgSize';
+import Selector from '../atoms/Selector';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -50,7 +50,7 @@ const Tab = styled.div.attrs(() => {})`
   margin: 5px 0;
   cursor: pointer;
   border: 1px solid white;
-  background-color: ${(props) => (props.showSetting ? "#49a8d4" : "")};
+  background-color: ${(props) => (props.showSetting ? '#49a8d4' : '')};
   z-index: 5;
   &:hover {
     background-color: #96dbfa;
@@ -103,11 +103,11 @@ const Main = () => {
 
   const changeShowSetting = (chooseSetiing) => {
     switch (chooseSetiing) {
-      case "resize":
+      case 'resize':
         setShowResizeSetting(true);
         setShowFilterSetting(false);
         break;
-      case "filter":
+      case 'filter':
         setShowResizeSetting(false);
         setShowFilterSetting(true);
         break;
@@ -130,13 +130,13 @@ const Main = () => {
       setDefaultSize({
         width:targetRef.current.offsetWidth,
         height:targetRef.current.offsetHeight
-      })
+      });
     }
   }, []);
 
   useEffect(() => {
-    setWidthSize(defaultSize.width)
-    setHeightSize(defaultSize.height)
+    setWidthSize(defaultSize.width);
+    setHeightSize(defaultSize.height);
   }, [defaultSize]);
 
   return (
@@ -156,7 +156,7 @@ const Main = () => {
           <Tab
             showSetting={showResizeSetting}
             onClick={() => {
-              changeShowSetting("resize");
+              changeShowSetting('resize');
             }}
           >
             Resize
@@ -164,7 +164,7 @@ const Main = () => {
           <Tab
             showSetting={showFilterSetting}
             onClick={() => {
-              changeShowSetting("filter");
+              changeShowSetting('filter');
             }}
           >
             Filter

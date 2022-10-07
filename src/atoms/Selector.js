@@ -1,6 +1,6 @@
-import React from "react";
-import Select from "react-select";
-import styled from "styled-components";
+import React from 'react';
+import Select from 'react-select';
+import styled from 'styled-components';
 
 const SelectWrapper = styled.div`
   width: 170px;
