@@ -5,6 +5,7 @@ import styled from "styled-components";
 const SelectWrapper = styled.div`
   width: 170px;
   z-index: 5;
+  color: black;
 `;
 
 const Selector = (props) => {
