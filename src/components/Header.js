@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Head = styled.div`
 height: 128px;
@@ -13,7 +13,7 @@ left: 0;
 z-index: 5;
 justify-content: space-between;
 align-items: center;
-`
+`;
 
 const Logo = styled.p`
 height: 85px;
@@ -21,14 +21,14 @@ width: 85px;
 position: relatice;
 top: 12px;
 background-color: white;
-`
+`;
 
 const Header = () => {
   return (
     <Head>
       <Logo>Logo</Logo>
     </Head>
-  )
-}
+  );
+};
 
 export default Header;

@@ -12,7 +12,7 @@ z-index: 5;
 display: flex;
 justify-content: center;
 align-items: center;
-`
+`;
 
 
 const Footer = () => {
@@ -20,7 +20,7 @@ const Footer = () => {
     <Footerwrapper>
       <div>Copyright © sidesideefect</div>
     </Footerwrapper>
-  )
-}
+  );
+};
 
 export default Footer;
