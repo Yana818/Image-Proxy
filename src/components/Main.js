@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -24,14 +25,14 @@ const EditHint = styled.div`
   top: -55px;
   position: absolute;
   width: 150px;
-  color: red;
-`;
+  color: #c6cbde;
+ `;
 const Fram = styled.div`
   width: 100%;
   height: 70%;
 `;
 
-const SettingTabs = styled.div`
+const SettingsContainer = styled.div`
   width: calc(100% - 60px);
   height: 70%;
   display: flex;
@@ -79,11 +80,11 @@ const OriginURL = styled.div`
   width: 35%;
   display: flex;
   flex-direction: column;
-  margin-right: 5px;
 `;
 
 const OriginURLText = styled.p`
   color: white;
+  font-size: 18px;
 `;
 
 const ImgproxyURL = styled.div`
@@ -95,11 +96,43 @@ const ImgproxyURL = styled.div`
 const URLContainer = styled.textarea`
   height: 136px;
   border: 1px solid black;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 15px;
+  box-sizing: border-box;
 `;
+
+const CheckBtn = styled.button.attrs(() => {})`
+  width: 50px;
+  height: 50px;
+  margin: auto 10px;
+  cursor: ${(props) => (props.disabled ? '' : 'pointer')};
+  background-color: #ffffff00;
+  color: white;
+  border-radius: 5px;
+  &:hover {
+    color: ${(props) => (props.disabled ? '' : 'black')};
+    background-color: ${(props) => (props.disabled ? '' : '#96dbfa')};
+  }
+`;
+
 
 const Main = () => {
   const [showResizeSetting, setShowResizeSetting] = useState(true);
   const [showFilterSetting, setShowFilterSetting] = useState(false);
+  const targetRef = useRef();
+  const [defaultSize, setDefaultSize] = useState({ width: 0, height: 0});
+  const [currentUrl, setCurrentUrl] = useState('');
+  const [fetchImg, setFetchImg] = useState(false);
+  const [imgproxyUrl, setImgproxyUrl] = useState('');
+  const [isloading, setIsloading] = useState(false);
+  const [query, setQuery] = useState({
+    url: '',
+    width: 0,
+    height: 0,
+    resize: { value: 'fit', label: 'Fit' },
+    blur: 0
+  });
 
   const changeShowSetting = (chooseSetiing) => {
     switch (chooseSetiing) {
@@ -118,12 +151,35 @@ const Main = () => {
     }
   };
 
-  const targetRef = useRef();
-  const [defaultSize, setDefaultSize] = useState({ width:0, height: 0});
-  const [widthSize, setWidthSize] = useState(0);
-  const [heightSize, setHeightSize] = useState(0);
-  const [resizeValue, setResizeValue] = useState({ value: 'fit', label: 'Fit' });
-  const [blurValue, setBlurValue] = useState(0);
+
+
+  const fetchImage = async () => {
+    const { url, width, height, resize, blur } = query;
+    const baseUrl = `https://imgproxy.sidesideeffect.io/api/image?url=${url}&width=${width}&height=${height}&resize=${resize.value}&blur=${blur}`;
+    const timeoutid =(bool) =>  setTimeout(() => setIsloading(bool), 1000);
+    setIsloading(true);
+    try {
+      const res = await fetch(baseUrl, {method: 'GET'});
+      const data = await res.url;
+
+      if (res.status !== 200){
+        console.log('Undo');
+        setImgproxyUrl('');
+        setFetchImg(false);
+      } else {
+        console.log('Done!!');
+        setImgproxyUrl(data);
+        setFetchImg(true);
+      }
+      timeoutid(false);
+    } catch (error) {
+      console.log(`Error: ${error}`);
+      setImgproxyUrl('');
+      setFetchImg(false);
+      timeoutid(false);
+    }
+    clearTimeout(timeoutid);
+  };
 
   useEffect(() => {
     if (targetRef.current) {
@@ -135,24 +191,33 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    setWidthSize(defaultSize.width);
-    setHeightSize(defaultSize.height);
+    setQuery({...query, 
+      width: defaultSize.width,
+      height: defaultSize.height
+    });
   }, [defaultSize]);
+
+  useEffect(() => {
+    fetchImage();
+  }, [query]);
+
 
   return (
     <Wrapper>
       <EditContainer>
         <EditHint>Drag the corner to resize me</EditHint>
-        <Fram ref={targetRef}>
+        <Fram ref={targetRef}  onMouseUp={() => fetchImage()}>
+          {/* {currentImage} */}
           <ImgSize 
             defaultValue={defaultSize}
-            widthSize={widthSize} 
-            heightSize={heightSize} 
-            setWidthSize={setWidthSize} 
-            setHeightSize={setHeightSize}
+            query={query}
+            setQuery={setQuery}
+            fetchImg={fetchImg}
+            imgproxyUrl={imgproxyUrl}
+            isloading={isloading}
           />
         </Fram>
-        <SettingTabs>
+        <SettingsContainer>
           <Tab
             showSetting={showResizeSetting}
             onClick={() => {
@@ -169,43 +234,65 @@ const Main = () => {
           >
             Filter
           </Tab>
-          {showResizeSetting &&           
-            <Setting>
+        </SettingsContainer>
+        <SettingsContainer>
+          {showResizeSetting &&   
+              <Setting>
               <SettingSlider 
-                title={'Width'} 
+                title={'width'} 
                 defaultValue={defaultSize.width} 
-                value={widthSize} setSlider={setWidthSize} 
+                query={query}
+                value={query.width} 
+                setQuery={setQuery} 
               />
-              <SettingSlider 
-                title={'Height'} 
+              <SettingSlider  
+                title={'height'} 
                 defaultValue={defaultSize.height} 
-                value={heightSize} 
-                setSlider={setHeightSize}
+                query={query}
+                value={query.height} 
+                setQuery={setQuery}
               />
-              <Selector value={resizeValue} setSelector={setResizeValue}/>
+              <Selector 
+                query={query} 
+                setQuery={setQuery} 
+              />
             </Setting>
           }
           {showFilterSetting &&           
             <Setting>
               <SettingSlider 
                 defaultIsMin 
-                title={'Blur'} 
+                title={'blur'} 
                 defaultValue={0} 
                 maxValue={10} 
-                value={blurValue} 
-                setSlider={setBlurValue} 
+                query={query}
+                value={query.blur} 
+                setQuery={setQuery} 
               />
             </Setting>
           }
-        </SettingTabs>
+        </SettingsContainer>
         <URLs>
           <OriginURL>
             <OriginURLText>Original image</OriginURLText>
-            <URLContainer></URLContainer>
+            <URLContainer
+              onChange={(e) => setCurrentUrl(e.target.value)}
+              value={currentUrl}
+            >
+            </URLContainer>
           </OriginURL>
+            <CheckBtn 
+              onClick={() => setQuery({...query, url: currentUrl})}
+              disabled={query.url === currentUrl ? 'disabled' : ''}
+            >
+              Enter
+            </CheckBtn>
           <ImgproxyURL>
             <OriginURLText>imgproxy URL</OriginURLText>
-            <URLContainer></URLContainer>
+            <URLContainer
+              value={imgproxyUrl}
+            >
+            </URLContainer>
           </ImgproxyURL>
         </URLs>
       </EditContainer>

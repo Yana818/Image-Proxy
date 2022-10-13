@@ -6,10 +6,17 @@ const SelectWrapper = styled.div`
   width: 170px;
   z-index: 5;
   color: black;
+  align-self: flex-end;
 `;
 
 const Selector = (props) => {
-  const { setSelector, value } = props;
+  const { 
+    query, 
+    query: {
+      resize: value
+    }, 
+    setQuery 
+  } = props;
 
   const options = [
     { value: 'fit', label: 'Fit' },
@@ -21,7 +28,7 @@ const Selector = (props) => {
       <Select
         options={options}
         value={value}
-        onChange={(e) => setSelector(e)}
+        onChange={(e) => setQuery({...query, resize: e})}
       />
     </SelectWrapper>
       
